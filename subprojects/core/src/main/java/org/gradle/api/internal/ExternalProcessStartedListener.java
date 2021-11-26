@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package org.gradle.process.internal;
+package org.gradle.api.internal;
 
-import org.gradle.process.ExecResult;
+import org.gradle.internal.service.scopes.EventScope;
+import org.gradle.internal.service.scopes.Scopes;
 
-public interface ExecHandleListener {
-    void beforeExecutionStarted(ExecHandle execHandle);
-
-    void executionStarted(ExecHandle execHandle);
-
-    void executionFinished(ExecHandle execHandle, ExecResult execResult);
+@EventScope(Scopes.Build.class)
+public interface ExternalProcessStartedListener {
+    void onExternalProcessStarted(String command);
 }

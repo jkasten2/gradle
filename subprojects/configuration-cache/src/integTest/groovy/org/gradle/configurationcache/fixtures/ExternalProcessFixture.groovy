@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.gradle.process.internal;
+package org.gradle.configurationcache.fixtures
 
-import org.gradle.process.ExecResult;
+class ExternalProcessFixture {
+    static String classpath() {
+        return new File(JavaExecutable.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath()
+    }
 
-public interface ExecHandleListener {
-    void beforeExecutionStarted(ExecHandle execHandle);
-
-    void executionStarted(ExecHandle execHandle);
-
-    void executionFinished(ExecHandle execHandle, ExecResult execResult);
+    static String executableClass() {
+        return JavaExecutable.class.getName()
+    }
 }

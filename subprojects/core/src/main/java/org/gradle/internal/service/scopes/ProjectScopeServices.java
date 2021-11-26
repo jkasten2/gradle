@@ -20,6 +20,7 @@ import org.gradle.api.AntBuilder;
 import org.gradle.api.component.SoftwareComponentContainer;
 import org.gradle.api.internal.CollectionCallbackActionDecorator;
 import org.gradle.api.internal.DomainObjectContext;
+import org.gradle.api.internal.ExternalProcessStartedListener;
 import org.gradle.api.internal.MutationGuards;
 import org.gradle.api.internal.artifacts.DependencyManagementServices;
 import org.gradle.api.internal.artifacts.Module;
@@ -71,6 +72,7 @@ import org.gradle.configuration.internal.UserCodeApplicationContext;
 import org.gradle.configuration.project.DefaultProjectConfigurationActionContainer;
 import org.gradle.configuration.project.ProjectConfigurationActionContainer;
 import org.gradle.internal.Factory;
+import org.gradle.internal.event.ListenerManager;
 import org.gradle.internal.file.PathToFileResolver;
 import org.gradle.internal.instantiation.InstantiatorFactory;
 import org.gradle.internal.jvm.JavaModuleDetector;
@@ -157,13 +159,14 @@ public class ProjectScopeServices extends DefaultServiceRegistry {
         );
     }
 
-    protected ExecFactory decorateExecFactory(ExecFactory execFactory, FileResolver fileResolver, FileCollectionFactory fileCollectionFactory, InstantiatorFactory instantiatorFactory, ObjectFactory objectFactory, JavaModuleDetector javaModuleDetector) {
+    protected ExecFactory decorateExecFactory(ExecFactory execFactory, FileResolver fileResolver, FileCollectionFactory fileCollectionFactory, InstantiatorFactory instantiatorFactory, ObjectFactory objectFactory, JavaModuleDetector javaModuleDetector, ListenerManager listenerManager) {
         return execFactory.forContext()
             .withFileResolver(fileResolver)
             .withFileCollectionFactory(fileCollectionFactory)
             .withInstantiator(instantiatorFactory.decorateLenient())
             .withObjectFactory(objectFactory)
             .withJavaModuleDetector(javaModuleDetector)
+            .withExternalProcessStartedListener(listenerManager.getBroadcaster(ExternalProcessStartedListener.class))
             .build();
     }
 
